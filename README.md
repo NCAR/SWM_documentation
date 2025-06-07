@@ -1,17 +1,12 @@
-# Welcome to the NCAR MkDocs Template repository!
+# NCAR SWM Mini-App Documentation
 
-
+TODO: Update this link to point to read the docs page for the this documentation instead of the template.
 [![Documentation Status](https://readthedocs.org/projects/ncar-mkdocs-template/badge/?version=latest)](https://ncar-mkdocs-template.readthedocs.io/en/latest/?badge=latest)
 
-This repository serves as a template for generating documentation from markdown files using the [MkDocs](https://www.mkdocs.org/) platform along with the customized [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme. The theme files have been customized to align with NCAR branding and colors and is available in the [NCAR_mkdocs_material_themes](https://github.com/NCAR/NCAR_mkdocs_material_themes).
+This repository holds the documentation for the [NCAR SWM mini-app](https://github.com/NCAR/SWM).
 
-
-## How to Use this Template Repository? 🛠️
-
-For detailed information on how to get started using this template repository, please visit [this page](https://ncar-mkdocs-template.readthedocs.io/en/latest/getting-started/).
-
-Example documentations created using this template can be found at [NCAR HPC Documentation](https://ncar-hpc-docs.readthedocs.io/en/latest/).
-
+## Attribution
+This documentation was created using the [NCAR mkdocs template](https://github.com/NCAR/NCAR_mkdocs_template).
 
 ## License
 

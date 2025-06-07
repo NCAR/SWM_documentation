@@ -1,11 +1,11 @@
 # ------------------------------------
 # -------- Project Information -------
 # ------------------------------------
-site_name: NCAR MkDocs Template
-site_description: A template for creating NCAR mkdocs
-repo_url: https://github.com/NCAR/NCAR_mkdocs_template/
-site_url: https://NCAR.github.io/NCAR_mkdocs_template/
-site_author: CISL CSG (Consulting Services Group)
+site_name: NCAR SWM Mini-App Documentation
+site_description: The documentation for the NCAR SWM Mini-App
+repo_url: https://github.com/NCAR/SWM_documentation
+site_url: https://NCAR.github.io/SWM_documentation
+site_author: CISL ASAP (Application Scalability And Performance Group)
 edit_uri: edit/main/docs/
 
 # directories to watch for automatic rebuilding when running "mkdocs serve"
@@ -34,7 +34,7 @@ validation:
 nav:
   - Home : index.md
 
-  - How to Use This Template?: getting-started.md
+  - Getting Started: getting_started.md
 
 # ------------------------------------
 # -- configuration - themes
@@ -45,7 +45,7 @@ INHERIT: theme.yml
 extra_javascript:
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML
 
-copyright: '&copy; 2024 UCAR, Licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons CC-BY-SA 4.0</a>.'
+copyright: '&copy; 2025 UCAR, Licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons CC-BY-SA 4.0</a>.'
 
 # ------------------------------------
 # -- configuration - extensions
