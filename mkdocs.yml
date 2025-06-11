@@ -36,6 +36,8 @@ nav:
 
   - Getting Started: getting_started.md
 
+  - Governing Equations : governing_equations.md
+
 # ------------------------------------
 # -- configuration - themes
 # (note theme.yml should be a symbolic link to one of several options'
