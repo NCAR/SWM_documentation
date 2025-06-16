@@ -28,7 +28,7 @@ $$ \vec{\eta} = \frac{\nabla \times \vec{V}}{P} = \frac{ \frac{\partial v}{\part
 
 # Domain
 
-The equations are discretized on a two dimensional Cartesian domain $\Omega = \left\{ (x,y) : 0 \leq x \leq L_x,  0 \leq y \leq L_y \right\} $.
+The equations are discretized on a two dimensional Cartesian domain $\Omega = \left\{ (x,y) : 0 \leq x \leq L_x,  0 \leq y \leq L_y \right\}$ .
 
 ![Domain](./figures/Domain_Overview_Non_Discretized.jpg)
 
