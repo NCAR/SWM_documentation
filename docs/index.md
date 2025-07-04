@@ -5,4 +5,6 @@ TODO: Update this link to point to read the docs page for the this documentation
 
 This repository holds the documentation for the [NCAR SWM mini-app](https://github.com/NCAR/SWM).
 
-For an overview of the mini app see [Getting Started](getting_started) page.
+To get started with the SWM mini app see the [quick start](quick_start.md) page.
+
+For an overview of the mini different versions of the SWM mini-app see the [swm repository tour](swm_repository_tour.md) page.

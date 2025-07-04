@@ -34,7 +34,11 @@ validation:
 nav:
   - Home : index.md
 
-  - Getting Started: getting_started.md
+  - Quick Start Guide: quick_start.md
+
+  - Repository Tour: swm_repository_tour.md
+
+  - Build: build.md
 
   - Governing Equations : governing_equations.md
 
