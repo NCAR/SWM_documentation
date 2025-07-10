@@ -139,10 +139,8 @@ $SWM_BUILD_DIR/swm_amrex/swm_AMReX/swm_amrex[_OMP][_MPI][_CUDA]
 ```
 where the text inside of the square brackets will only appear if the corresponding option was set to ON.
 
-To run on the gpu you need to set SWM_DEVICE=gpu and SWM_CUDA=ON. Note that setting SWM_OPENMP=ON only applies to spawning treads on the cpu and does not offload onto the gpu.
+To run on the GPU you need to set SWM_DEVICE=gpu and SWM_CUDA=ON. If you want to run on multiple GPUs then you must also set SWM_MPI=ON. Note that setting SWM_OPENMP=ON only applies to spawning treads on the cpu and does not offload onto the gpu.
 
-
-SWM_CUDA  
 
 **Additional Dependencies and/or Restrictions:**
 TODO: Go into details about AMReX build options and how they must be enabled to correspond to these features. 
@@ -180,19 +178,51 @@ mpirun -np 4 $SWM_BUILD_DIR/swm_amrex/swm_AMReX/swm_amrex_MPI_CUDA $SWM_ROOT/swm
 ```
 
 ### AMReX Driver + Fortran Kernels
-TODO: THIS VERSION OF THE CODE NEEDS TO BE UPDATED. ITS IS STILL USING THE THE C++ KERNELS INSTEAD OF THE FORTRAN KERNELS.
+**Summary:**
+This version of the code uses the same AMReX driver described in the previous section but the kernels inside of the loops are written in fortran instead of C++. The build and run instructions are the same as the previous section.
 
-### AMReX Driver + Fortran Subroutines
+TODO: THIS VERSION OF THE CODE NEEDS TO BE UPDATED. ITS IS STILL USING THE THE C++ KERNELS INSTEAD OF THE FORTRAN KERNELS. COME BACK AND UPDATE THIS SECTION AS NEEDED AFTER DOING THAT.
 
-#### AMReX Driver + Fortran Subroutines with OpenACC
+### AMReX Driver + Fortran Subroutines with OpenACC
+**Summary:**
+This version of the mini-app uses an AMReX driver written in C++ and calls Fortran subroutines that are offloaded the compute heavy loop onto the GPUs using OpenACC directives.
+
+**Build:**
+To build this version of the mini-app your CMake build should use:
 
 | Variable Name | Possible Values |
 |---------------|-----------------|
 | SWM_AMREX     | ON              |
-| SWM_FORTRAN   | ON              |
 | SWM_OPENACC   | ON              |
-| SWM_DEVICE    | cpu or gpu      |
+| SWM_CUDA      | ON              |
+| SWM_DEVICE    | gpu             |
 
+You will also need to build using the nvidia compiler stack. Typically by setting:
+
+| Variable Name          | Possible Values |
+|------------------------|-----------------|
+| CMAKE_C_COMPILER       | nvc             |
+| CMAKE_CXX_COMPILER     | nvc++           |
+| CMAKE_Fortran_COMPILER | nvfortan        |
+
+**Additional Dependencies and/or Restrictions:**
+TODO:
+
+**Run:**
+TODO:
+
+### AMReX Driver + Fortran Subroutines with OpenMP
+**Summary:**
+This version of the mini-app uses an AMReX driver written in C++ and calls Fortran subroutines that are offloaded the compute heavy loop onto the GPUs using OpenMP directives.
+
+**Build:**
+TODO:
+
+**Additional Dependencies and/or Restrictions:**
+TODO:
+
+**Run:**
+TODO:
 
 ## Python
 ### Python + NumPy
