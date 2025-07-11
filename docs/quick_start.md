@@ -23,7 +23,7 @@ export SWM_ROOT=REPLACE_WITH_PATH_TO_SWM_REPO
 > Some of the provided build/run scripts in the SWM repository also use the `SWM_ROOT` variable.
 
 ## Step 2: Generate the Build Directory 
-CMake is the recommend way to build the various versions of the SWM mini-app. The following commands generate a build that uses all default options. 
+CMake is the recommend way to build the various versions of the SWM mini-app. The following command generates a build that uses all default options. 
 
 ```bash
 cmake -S $SWM_ROOT -B $SWM_BUILD_DIR
@@ -44,21 +44,7 @@ To build the code run the command:
 cmake --build $SWM_BUILD_DIR
 ```
 
->When we generated the build directory in the previous set we did not specify which build system to use. But most systems will use Make by default. If that is the case on your system then our build directory should have a top level makefile that can be used to build all the executables. So an alternative way to build the code is: 
->```bash
- cd $SWM_BUILD_DIR
- make
- ```
-> You can also build each version of the mini-app by name from the top level makefile. For example to build only the c version of the mini-app:
->```bash
- cd $SWM_BUILD_DIR
- make swm_c
- ```
-> Each subdirectory in `SWM_BUILD_DIR` that generates an executable also has a makefile that we can run. So another way to build only the c version of the mini-app is: 
->```bash
- cd $SWM_BUILD_DIR/swm_c/c
- make
- ```
+>When we generated the build directory in the previous step we did not specify which build system to use. But most systems will use Make by default. If that is the case on your system then the build directory should have a top level makefile that can also be used to build all the executables. See the [build page](build.md) for more details.
 
 ## Step 4: Run
 There should now be two executables in `SWM_BUILD_DIR`. The C and Fortran versions of the mini-app do not take any commandline arguments or input files. You can run them via:

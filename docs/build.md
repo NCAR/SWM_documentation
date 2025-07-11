@@ -1,43 +1,111 @@
 # Build
+CMake is the recommend way to build the SWM mini-apps. The following commands generates a build that uses all default options. 
+
+```bash
+cmake -S $SWM_ROOT -B $SWM_BUILD_DIR
+```
+Where `SWM_ROOT` points to the directory where you pulled the SWM repository and `SWM_BUILD_DIR` is a directory where the build will be generated. 
+
+> You can place the build directory `SWM_BUILD_DIR` anywhere, but it is recommend to put it somewhere outside of the `SWM_ROOT` directory. That way the files generated in `SWM_BUILD_DIR` are independent of your source controlled `SWM_ROOT` directory. Hence you could modify and generate files in `SWM_BUILD_DIR` without generating a lot of untracked files in your `SWM_ROOT` directory. I usually just put the build directory right next to the source directory: 
+>```bash
+ export SWM_BUILD_DIR=$SWM_ROOT/../SWM_build
+ ``` 
+
+To build the code run the command: 
+```bash
+cmake --build $SWM_BUILD_DIR
+```
+>When we generated the build directory we did not specify which build system to use. But most systems will use Make by default. If that is the case on your system then the build directory should have a top level makefile that can be used to build all the executables. So an alternative way to build the code is: 
+>```bash
+ cd $SWM_BUILD_DIR
+ make
+ ```
+> You can also build each version of the mini-app by name from the top level makefile. For example to build only the c version of the mini-app:
+>```bash
+ cd $SWM_BUILD_DIR
+ make swm_c
+ ```
+> Each subdirectory in `SWM_BUILD_DIR` that generates an executable also has a makefile that we can run. So another way to build only the c version of the mini-app is: 
+>```bash
+ cd $SWM_BUILD_DIR/swm_c/c
+ make
+ ```
+ > For an overview of the names of the executables and where they will be generated in the directory structure of `SWM_BUILD_DIR` see the [SWM repository tour](swm_repository_tour) page.
+
+
 
 ## CMake Build Options
 
-An overview of the available options is shown in the table below.
+An overview of the available CMake build options are shown in the table below.
 
 | Variable Name | Description                                    | Default | Possible values |
 |---------------|---------------------------------------------   |---------|-----------------|
 | SWM_DEVICE    | Select device type to build for                | cpu     | cpu or gpu      |
 | SWM_C         | Enable the C versions of the mini-app          | ON      | ON or OFF       |
 | SWM_FORTRAN   | Enable the Fortran versions of the mini-app    | ON      | ON or OFF       |
-| SWM_AMREX     | Enable the AMReX version of the mini-app       | OFF     | ON or OFF       |
+| SWM_AMREX     | Enable the AMReX versions of the mini-app      | OFF     | ON or OFF       |
 | SWM_OPENACC   | Enable the OpenACC versions of the mini-app    | OFF     | ON or OFF       |
 | SWM_OPENMP    | Enable the OpenMP versions of the mini-app     | OFF     | ON or OFF       |
 | SWM_MPI       | Enable the MPI versions of the mini-app        | OFF     | ON or OFF       |
 | SWM_CUDA      | Enable the CUDA versions of the mini-app       | OFF     | ON or OFF       |
 | AMReX_ROOT    | Path to AMReX library CMake configuration file. See below for details. | none    | 
 
-The default options are set so that the project should build on any just about system that has CMake, a C compiler, and a Fortran compiler. As you turn more options to ON you may need to install additional dependencies on you system. Refer to the [repository tour](swm_repository_tour.md) page for more details on each version of the mini-app and its requirements.
+> AMReX_ROOT is required if SWM_AMREX is set to ON. Details on how to set it correctly [below](#language-swm_c-swm_fortran-swm_amrex).
 
-### SWM_DEVICE
-The option `SWM_DEVICE` controls the code will run on a cpu or gpu. This option means slightly different things depending on what version of the mini-app you are running.
+The default options are set so that the project should build on any just about system that has CMake, a C compiler, and a Fortran compiler. As you turn more options to ON you may need to install additional dependencies on your system. Refer to the [repository tour](swm_repository_tour.md) page for more details on each version of the mini-app and its requirements.
 
-The the options `SWM_C`, `SWM_FORTRAN`, and `SWM_AMREX` control building the code 
+You can change the default value of any variable in the table above by passing them via the command line when generating the CMake build.
 
-The AMReX versions of the SWM mini-app are linked against a CMake install of the AMReX library. The variable `AMReX_ROOT` should point to the directory containing the AMReXConfig.cmake file for your AMReX install. If you installed the AMReX library at `AMREX_INSTALL_DIR` then you should typically set `AMReX_ROOT=$AMREX_INSTALL_DIR/lib/cmake/AMReX`
+```bash
+cmake -D<VARIABLE_NAME>=<VARIABLE_VALUE> -S $SWM_ROOT -B $SWM_BUILD_DIR
+```
+
+For example if you wanted to build the version of the mini-app written in C with OpenACC directives targeting GPUs and did not want to build the Fortran versions of the mini-app:
+```bash
+cmake -DSWM_DEVICE=gpu -DSWM_C=ON -DSWM_FORTRAN=OFF -DSWM_OPENACC=ON -S $SWM_ROOT -B $SWM_BUILD_DIR
+```
+> Note: We did not have to pass -DSWM_C=ON because that is ON by default. But there is no harm in being explicit.
+
+You can also edit these values for a CMake build that you have already generated by editing the file: `$SWM_BUILD_DIR/CMakeCache.txt`
 
 It is possible to configure the options in a way that conflicts. If you do select an incompatible set up options then you should receive a warning or error when generating the cmake build. For example if you set `SWM_DEVICE=cpu` and `SWM_CUDA=ON` then CMake will generate a warning that CUDA cannot be run on the cpu, and will automatically set `SWM_CUDA=OFF`.
 
-You can change the compilers used using the typical cmake variables:
+### SWM_DEVICE
+The option `SWM_DEVICE` controls the code will run on exclusively on the cpu or if some portion of the application will be offloaded to the gpu. The amount of gpu offloading and the technology used to do it vary depending on what version of the mini-app you are running. See the [swm repository tour](swm-repository_tour.md) page for more details on how this switch affects each version of the mini-app.
+
+### Language: SWM_C SWM_FORTRAN SWM_AMREX
+The options `SWM_C`, `SWM_FORTRAN`, and `SWM_AMREX` are high level switches to control building the mini-app versions written in that respective programming language. There are multiple versions of the mini-app written in each of these programming languages. 
+
+> Note: There are AMReX versions of the mini-app that contain some code written in Fortran. They controlled by the SWM_AMREX switch. The `SWM_FORTRAN` switch does not enable or disable these AMReX+Fortran versions of the mini-app. 
+
+The AMReX versions of the SWM mini-app are linked against a CMake install of the AMReX library. The variable `AMReX_ROOT` should point to the directory containing the AMReXConfig.cmake file for your AMReX install. If you installed the AMReX library at `AMREX_INSTALL_DIR` then you should typically set `AMReX_ROOT=$AMREX_INSTALL_DIR/lib/cmake/AMReX`. For more on how to install the AMReX library for the SWM mini-app see [this section](#amrex-cmake-build). 
+
+### Features: SWM_OPENACC, SWM_OPENMP, SWM_MPI, SWM_CUDA
+The options SWM_OPENACC, SWM_OPENMP, SWM_MPI, and SWM_CUDA enable the versions of the mini-app that use those features. If you are going to enable any of these options you should ensure your environment is set up to use these features. See the [swm repository tour](swm-repository_tour.md) page for more details on how this switch affects each version of the mini-app.
+
+### Other CMake Options
+You can change which compilers are used via the CMake variables:
 
 | Variable Name | Description | Default | Possible values |
 |---------------|-------------|---------|-----------------|
-| CMAKE_C_COMPILER | Explicitly specify which C compiler to use. | Default controlled by CMake. If $CC is defined in your environment it will use that instead of the default. | gcc and nvc have been tested. Although this should work with just about any C compiler. |
-| CMAKE_CXX_COMPILER | Explicitly specify which C++ compiler to use. | Default controlled by CMake. If $CXX is defined in your environment it will use that instead of the default. | g++ and nvc++ have been tested. Although this should work with just about any C compiler. |
-| CMAKE_Fortran_COMPILER | Explicitly specify which Fortran compiler to use. | Default controlled by CMake. If $FC is defined in your environment it will use that instead of the default. | gfortran and nvfotran have been tested. Although this should work with just about any Fortran compiler. |
+| CMAKE_C_COMPILER | Explicitly specify which C compiler to use. | Default controlled by CMake. If $CC is defined in your environment it will use that. | gcc and nvc have been tested. |
+| CMAKE_CXX_COMPILER | Explicitly specify which C++ compiler to use. | Default controlled by CMake. If $CXX is defined in your environment it will use that. | g++ and nvc++ have been tested. |
+| CMAKE_Fortran_COMPILER | Explicitly specify which Fortran compiler to use. | Default controlled by CMake. If $FC is defined in your environment it will use that. | gfortran and nvfotran have been tested. |
 
 ## AMReX CMake Build
-This is a quick overview on the options we use when building the AMReX library to link with our mini-app. For more information on building AMReX with CMake see their [documentation page](https://amrex-codes.github.io/amrex/docs_html/BuildingAMReX.html#building-with-cmake).
+This is an overview of the options we use when building the AMReX library to link with the AMReX version of the SWM mini-app. You only need to build AMReX if you plan on setting `SWM_AMREX=ON`. For for most up to date and detailed information on building AMReX with CMake see their [documentation page](https://amrex-codes.github.io/amrex/docs_html/BuildingAMReX.html#building-with-cmake).
 
+### Get the AMReX Source Code
+```bash
+git clone https://github.com/AMReX-Codes/amrex.git
+```
+
+> It is recommended that you set the environment variable AMREX_HOME to where you cloned the AMReX repository. For example in bash:
+```bash
+export AMREX_HOME=PATH_TO_WHERE_YOU_CLONED_THE_AMREX_REPOSITORY
+```
+
+### Build and Install the AMReX Library
 AMReX CMake build options we always-use:
 
 | Variable Name        | Value  |
@@ -47,7 +115,22 @@ AMReX CMake build options we always-use:
 | AMReX_FORTRAN        | YES    |
 | CMAKE_INSTALL_PREFIX | The path to where AMReX library will be installed. |
 
-AMReX CMake build options we sometimes use depending on if you would like to build the mini-app for parallel cpu execution. For example if you plan on building the amrex version of the SWM mini-app with `SWM_MPI=ON` and/or `SWM_CUDA=ON` then you will need to enable those features when building the AMReX library.
+> Take note of where you installed the AMReX library, the value for CMAKE_INSTALL_PREFIX, because we will use it later when generating our SWM CMake build. I typically just save this to an environment variable so I can easily pass it to my SWM build later. For example:
+
+To build the AMReX library with Cmake and then
+```bash
+# Save where you are going to install AMReX
+AMREX_BUILD_DIR=PATH_TO_WHERE_YOU_WANT_TO_BUILD_AMREX
+AMREX_INSTALL_DIR=PATH_TO_WHERE_YOU_WANT_TO_INSTALL_AMREX
+
+# Install AMReX
+cmake -DAMReX_SPACEDIM=2 -DAMReX_PRECISION=DOUBLE -DAMReX_FORTRAN=YES -DCMAKE_INSTALL_PREFIX="$AMREX_INSTALL_DIR" -S "$AMREX_HOME" -B "$AMREX_BUILD_DIR"
+
+# Generate a CMake build for SWM that uses the AMReX we just installed
+cmake -DSWM_AMREX=ON -DAMReX_ROOT=$AMREX_INSTALL_DIR/lib/cmake/AMReX -S $SWM_ROOT -B $SWM_BUILD_DIR
+```
+
+You will need to pass AMReX CMake build options if you would like to build the SWM mini-app for parallel execution. For example if you want to build the AMReX version of the SWM mini-app, e.g with `SWM_MPI=ON` and/or `SWM_OPENMP=ON`, then you will need to enable those features when building the AMReX library.
 
 | Variable Name | Value |
 |---------------|-------|

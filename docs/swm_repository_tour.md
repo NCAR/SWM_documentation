@@ -86,7 +86,7 @@ $SWM_BUILD_DIR/swm_fortran/fortran/swm_fortran
 ```
 
 **Run:**
-No command line arguments or any other configuration required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fotran/common/params.F90`.
+No command line arguments or any other configuration required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fortran/common/params.F90`.
 
 ### Fortran with OpenACC
 **Summary:**
@@ -111,7 +111,7 @@ The CMake build currently only works with the GNU and Nvidia compilers.
 >TODO: Adding additional compiler support is as simple as adding the OpenACC flags for your compiler to the CMake build. 
 
 **Run:**
-No command line arguments or any other configuration required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fotran/common/params.F90`.
+No command line arguments or any other configuration required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fortran/common/params.F90`.
 
 
 ## AMReX
@@ -120,7 +120,7 @@ The AMReX versions of the mini-app are really written in C++ but they use the AM
 
 ### AMReX
 **Summary:**
-A version of the mini-app written in C++ and uses the AMReX library. This version has a large number of configuration options. It is able to run on in serial or parallel on cpus and gpus using a number of different programming model backends (MPI, OpenMP, CUDA) independently or or in combination with each other. 
+A version of the mini-app written in C++ and uses the AMReX library. This version has a large number of configuration options. It is able to run on in serial or parallel on CPUs and gpus using a number of different programming model backends (MPI, OpenMP, CUDA) independently or or in combination with each other. 
 
 **Build:**
 To build this version of the mini-app your CMake build should use:
@@ -128,6 +128,7 @@ To build this version of the mini-app your CMake build should use:
 | Variable Name | Possible Values |
 |---------------|-----------------|
 | SWM_AMREX     | ON              |
+| AMReX_ROOT    | Path to AMReX library CMake configuration file. See below for details. |
 | SWM_OPENMP    | ON or OFF       |
 | SWM_MPI       | ON or OFF       |
 | SWM_CUDA      | ON or OFF       |
@@ -141,15 +142,8 @@ where the text inside of the square brackets will only appear if the correspondi
 
 To run on the GPU you need to set SWM_DEVICE=gpu and SWM_CUDA=ON. If you want to run on multiple GPUs then you must also set SWM_MPI=ON. Note that setting SWM_OPENMP=ON only applies to spawning treads on the cpu and does not offload onto the gpu.
 
-
 **Additional Dependencies and/or Restrictions:**
-TODO: Go into details about AMReX build options and how they must be enabled to correspond to these features. 
-OPENMP
-MPI
-CUDA - Mention only works with nvidia cuda compiler
-TODO: Mention conflict between cpu and cuda. 
-
-Give example of AMReX Cmake Build that we can link against depending on the options you choose.
+You will need to link against the AMReX library that has been configured correctly for the SWM options you select. For example if you build with SWM_MPI=ON you should be linking against a version of the AMReX library built with MPI. See the [build](build.md#amrex-cmake-build) page for more details.
 
 **Run:**
 The executable expects an input file to be passed as the first commandline argument. The input file defines the mesh size, number of iterations, and several other key parameters. An example input file is provided at `$SWM_ROOT/swm_amrex/common/inputs`. For example to run the executable:
