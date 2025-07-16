@@ -130,7 +130,7 @@ cmake -DAMReX_SPACEDIM=2 -DAMReX_PRECISION=DOUBLE -DAMReX_FORTRAN=YES -DCMAKE_IN
 cmake -DSWM_AMREX=ON -DAMReX_ROOT=$AMREX_INSTALL_DIR/lib/cmake/AMReX -S $SWM_ROOT -B $SWM_BUILD_DIR
 ```
 
-You will need to pass AMReX CMake build options if you would like to build the SWM mini-app for parallel execution. For example if you want to build the AMReX version of the SWM mini-app, e.g with `SWM_MPI=ON` and/or `SWM_OPENMP=ON`, then you will need to enable those features when building the AMReX library.
+You will need to pass additional AMReX CMake build options if you would like to build the SWM mini-app for parallel execution. For example if you want to build the AMReX version of the SWM mini-app, e.g with `SWM_MPI=ON` and/or `SWM_OPENMP=ON`, then you will need to enable those features when building the AMReX library.
 
 | Variable Name | Value |
 |---------------|-------|
@@ -142,7 +142,7 @@ If you are going to build the mini-app to run on NVIDIA GPUs (`SWM_DEVICE=gpu` a
 | Variable Name            | Value |
 |--------------------------|-------|
 | AMReX_GPU_BACKEND        | CUDA |
-| AMReX_GPU_RDC            | YES (Maybe needs to be NO for the Fortran with OpenACC or OpenMP directives. I am still working on getting that build working) |
+| AMReX_GPU_RDC            | NO (When I set this to YES I get linking errors when trying to call a Fortran subroutine with OpenACC or OpenMP directives for GPU offloading. For now just set it to NO and check back on this.) |
 | AMReX_CUDA_ARCH          | Depends on the gpu you are using |
 | AMReX_DIFFERENT_COMPILER | ON |
 

@@ -20,7 +20,7 @@ Throughout this document `SWM_ROOT` will refer to the directory were you pulled 
 export SWM_ROOT=REPLACE_WITH_PATH_TO_SWM_REPO
 ```
 
-> Some of the provided build/run scripts in the SWM repository also use the `SWM_ROOT` variable.
+> Some of the provided build/run scripts in the SWM repository also use the `SWM_ROOT` environment variable.
 
 ## Step 2: Generate the Build Directory 
 CMake is the recommend way to build the various versions of the SWM mini-app. The following command generates a build that uses all default options. 
@@ -29,14 +29,14 @@ CMake is the recommend way to build the various versions of the SWM mini-app. Th
 cmake -S $SWM_ROOT -B $SWM_BUILD_DIR
 ```
 
-Where `SWM_ROOT` points to the directory where you pulled the SWM repository in the previous step and `SWM_BUILD_DIR` is a directory where the build will be generated. 
+Where `SWM_ROOT` points to the directory where you pulled the SWM repository in the [previous step](#step-1-get-the-code) and `SWM_BUILD_DIR` is a directory where the build will be generated. 
 
-> You can place the build directory `SWM_BUILD_DIR` anywhere, but it is recommend to put it somewhere outside of the `SWM_ROOT` directory. That way the files generated in `SWM_BUILD_DIR` are independent of your source controlled `SWM_ROOT` directory. Hence you could delete `SWM_BUILD_DIR`, generate multiple builds with different options, or run the executables within a build without generating a lot of untracked files in your `SWM_ROOT` directory. I usually just put the build directory right next to the source directory with: 
+> You can place the build directory `SWM_BUILD_DIR` anywhere, but it is recommend to put it somewhere outside of the `SWM_ROOT` directory. That way the files generated in `SWM_BUILD_DIR` are independent of your source controlled `SWM_ROOT` directory. Allowing you to generate multiple builds with different options or run the executables within a build without generating a lot of untracked files in your `SWM_ROOT` directory. I usually just put the build directory right next to the source directory with: 
 >```bash
  export SWM_BUILD_DIR=$SWM_ROOT/../SWM_build
  ``` 
 
-For more on the available SWM CMake build options see the [build](build.md) page .
+For more on the available SWM CMake build options see the [build](build.md) page.
 
 ## Step 3: Build
 To build the code run the command: 

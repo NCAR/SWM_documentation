@@ -3,7 +3,7 @@
 ## High Level Overview
 The [SWM](https://github.com/NCAR/SWM) repository is organized on the top level by the language that the mini-app is written in. There are versions of the mini-app written in C, Fortran, Python, AMRex, and Julia (NOTE: WE MAY DROP THE JULIA VERSION SOON). 
 
-In most cases there are multiple versions of the mini-app written in that language. If so the language directory, SWM/swm_{c, fortran, python, amrex, etc...}, contains subdirectories for the different versions of the mini-app written in that language. If there are any files used by multiple versions of the mini-app written in the same language then they are contained in a common directory.
+Eash of those directories contain multiple versions of the mini-app written in that language. The language directory, SWM/swm_{c, fortran, python, amrex, etc...}, contains subdirectories for the different versions of the mini-app written in that language. If there are any files used by multiple versions of the mini-app written in the same language then they are contained in a common directory.
 
 For example, there are two versions of the mini-app written in the C programming language. One version only uses C and the other uses C with OpenACC directives for loop parallelization. There are also some files shared among both versions. In this case the directory structure is as follows:
 
@@ -13,9 +13,9 @@ For example, there are two versions of the mini-app written in the C programming
 | $SWM_ROOT/swm_c/c         | Files only used by the plain C version of the mini-app     |
 | $SWM_ROOT/swm_c/c_OpenACC | Files only used by the C + OpenACC version of the mini-app |
 
->Throughout this document `SWM_ROOT` will refer to the directory were you pulled the SWM repository.
+>Throughout this document `SWM_ROOT` will refer to the directory were you pulled the SWM repository. See the [quick start guide](quick_start.md) to get the code and set SWM_ROOT.
 
-Build instructions for the for the compiled versions of the mini-app (C, Fortran, and AMReX) are [here](build.md). Some of the following sections mention build flags covered on that page.
+Build instructions for the for the compiled versions of the mini-app (C, Fortran, and AMReX) are in the [build page](build.md). Some of the following sections mention CMake build flags covered on that page.
 
 ## C
 
@@ -37,7 +37,7 @@ $SWM_BUILD_DIR/swm_c/c/swm_c
 ```
 
 **Run:**
-No command line arguments or any other configuration required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) are hardcoded at compile time in the file `$SWM_ROOT/swm_c/c/shallow_swap.c`.
+No command line arguments or any other configuration is required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) are hardcoded at compile time in the file `$SWM_ROOT/swm_c/c/shallow_swap.c`.
 
 
 ### C with OpenACC
@@ -64,7 +64,7 @@ The CMake build currently only works with the GNU and Nvidia compilers.
 >TODO: Adding additional compiler support is as simple as adding the OpenACC flags for your compiler to the CMake build.
 
 **Run:**
-No command line arguments or any other configuration required. Just run the executables produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time in the files `$SWM_ROOT/swm_c/c_OpenACC/shallow.swap.acc.c` and `$SWM_ROOT/swm_c/c_OpenACC/shallow.swap.acc.Tile.c`.
+No command line arguments or any other is configuration required. Just run the executables produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time in the files `$SWM_ROOT/swm_c/c_OpenACC/shallow.swap.acc.c` and `$SWM_ROOT/swm_c/c_OpenACC/shallow.swap.acc.Tile.c`.
 
 ## Fortran
 
@@ -86,7 +86,7 @@ $SWM_BUILD_DIR/swm_fortran/fortran/swm_fortran
 ```
 
 **Run:**
-No command line arguments or any other configuration required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fortran/common/params.F90`.
+No command line arguments or any other configuration is required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fortran/common/params.F90`.
 
 ### Fortran with OpenACC
 **Summary:**
@@ -111,16 +111,15 @@ The CMake build currently only works with the GNU and Nvidia compilers.
 >TODO: Adding additional compiler support is as simple as adding the OpenACC flags for your compiler to the CMake build. 
 
 **Run:**
-No command line arguments or any other configuration required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fortran/common/params.F90`.
+No command line arguments or any other configuration is required. Just run the executable produced in the previous step. The problem inputs (mesh size, number of iterations, etc...) for the executables are hardcoded at compile time and defined the file `$SWM_ROOT/swm_fortran/common/params.F90`.
 
 
 ## AMReX
-The AMReX versions of the mini-app are really written in C++ but they use the AMReX library extensively. So we have decided to group all of the AMReX versions together in their own "language" directory.
-
+The AMReX versions of the mini-app are really written in C++ but they use the [AMReX library](https://amrex-codes.github.io/amrex/) extensively. So we have decided to group all of the AMReX versions together in their own "language" directory.
 
 ### AMReX
 **Summary:**
-A version of the mini-app written in C++ and uses the AMReX library. This version has a large number of configuration options. It is able to run on in serial or parallel on CPUs and gpus using a number of different programming model backends (MPI, OpenMP, CUDA) independently or or in combination with each other. 
+A version of the mini-app written in C++ and uses the AMReX library. This version has a large number of configuration options. It is able to run on in serial or parallel on CPUs and GPUs using a number of different programming model backends (MPI, OpenMP, CUDA) independently or or in combination with each other. 
 
 **Build:**
 To build this version of the mini-app your CMake build should use:
@@ -140,7 +139,7 @@ $SWM_BUILD_DIR/swm_amrex/swm_AMReX/swm_amrex[_OMP][_MPI][_CUDA]
 ```
 where the text inside of the square brackets will only appear if the corresponding option was set to ON.
 
-To run on the GPU you need to set SWM_DEVICE=gpu and SWM_CUDA=ON. If you want to run on multiple GPUs then you must also set SWM_MPI=ON. Note that setting SWM_OPENMP=ON only applies to spawning treads on the cpu and does not offload onto the gpu.
+To run on the GPU you need to set SWM_DEVICE=gpu and SWM_CUDA=ON. If you want to run on multiple GPUs then you must also set SWM_MPI=ON. It is recommended to use one MPI rank per GPU. Note that setting SWM_OPENMP=ON only applies to spawning treads on the cpu and does not offload onto the gpu.
 
 **Additional Dependencies and/or Restrictions:**
 You will need to link against the AMReX library that has been configured correctly for the SWM options you select. For example if you build with SWM_MPI=ON you should be linking against a version of the AMReX library built with MPI. See the [build](build.md#amrex-cmake-build) page for more details.
@@ -175,11 +174,11 @@ mpirun -np 4 $SWM_BUILD_DIR/swm_amrex/swm_AMReX/swm_amrex_MPI_CUDA $SWM_ROOT/swm
 **Summary:**
 This version of the code uses the same AMReX driver described in the previous section but the kernels inside of the loops are written in fortran instead of C++. The build and run instructions are the same as the previous section.
 
-TODO: THIS VERSION OF THE CODE NEEDS TO BE UPDATED. ITS IS STILL USING THE THE C++ KERNELS INSTEAD OF THE FORTRAN KERNELS. COME BACK AND UPDATE THIS SECTION AS NEEDED AFTER DOING THAT.
+TODO: THIS VERSION OF THE CODE NEEDS TO BE UPDATED. ITS IS STILL USING THE THE C++ KERNELS INSTEAD OF THE FORTRAN KERNELS. COME BACK AND UPDATE THIS SECTION AS NEEDED AFTER THAT HAS BEEN FIXED.
 
 ### AMReX Driver + Fortran Subroutines with OpenACC
 **Summary:**
-This version of the mini-app uses an AMReX driver written in C++ and calls Fortran subroutines that are offloaded the compute heavy loop onto the GPUs using OpenACC directives.
+This version of the mini-app uses an AMReX driver written in C++ and calls Fortran subroutines that are offloaded the compute heavy loop onto the GPUs using OpenACC directives.  
 
 **Build:**
 To build this version of the mini-app your CMake build should use:
@@ -191,6 +190,8 @@ To build this version of the mini-app your CMake build should use:
 | SWM_CUDA      | ON              |
 | SWM_DEVICE    | gpu             |
 
+> Note: This has only been tested on a single GPU. Still need to test with SWM_MPI=ON and try a multi-gpu run.
+
 You will also need to build using the nvidia compiler stack. Typically by setting:
 
 | Variable Name          | Possible Values |
@@ -199,24 +200,57 @@ You will also need to build using the nvidia compiler stack. Typically by settin
 | CMAKE_CXX_COMPILER     | nvc++           |
 | CMAKE_Fortran_COMPILER | nvfortan        |
 
+The CMake build will produce an executable at: 
+```bash
+$SWM_BUILD_DIR/swm_amrex/swm_AMReX_Fsubroutine/OpenACC/swm_amrex_fsubroutine_acc
+```
+
 **Additional Dependencies and/or Restrictions:**
-TODO:
+You will need to link against the AMReX library that has been configured correctly for the SWM options you select. This version of the mini-app is only meant to run on GPUs so you will need a version of the AMReX library built with GPU support. See the [build](build.md#amrex-cmake-build) page for more details.
 
 **Run:**
-TODO:
+The executable expects an input file to be passed as the first commandline argument. The input file defines the mesh size, number of iterations, and several other key parameters. An example input file is provided at `$SWM_ROOT/swm_amrex/common/inputs`. For example to run the executable:
+```bash
+$SWM_BUILD_DIR/swm_amrex/swm_AMReX_Fsubroutine/OpenACC/swm_amrex_fsubroutine_acc $SWM_ROOT/swm_amrex/common/inputs
+```
 
 ### AMReX Driver + Fortran Subroutines with OpenMP
 **Summary:**
 This version of the mini-app uses an AMReX driver written in C++ and calls Fortran subroutines that are offloaded the compute heavy loop onto the GPUs using OpenMP directives.
 
 **Build:**
-TODO:
+To build this version of the mini-app your CMake build should use:
+
+| Variable Name | Possible Values |
+|---------------|-----------------|
+| SWM_AMREX     | ON              |
+| SWM_OPENMP    | ON              |
+| SWM_CUDA      | ON              |
+| SWM_DEVICE    | gpu             |
+
+> Note: This has only been tested on a single GPU. Still need to test with SWM_MPI=ON and try a multi-gpu run.
+
+You will also need to build using the nvidia compiler stack. Typically by setting:
+
+| Variable Name          | Possible Values |
+|------------------------|-----------------|
+| CMAKE_C_COMPILER       | nvc             |
+| CMAKE_CXX_COMPILER     | nvc++           |
+| CMAKE_Fortran_COMPILER | nvfortan        |
+
+The CMake build will produce an executable at: 
+```bash
+$SWM_BUILD_DIR/swm_amrex/swm_AMReX_Fsubroutine/OpenMP/swm_amrex_fsubroutine_omp
+```
 
 **Additional Dependencies and/or Restrictions:**
-TODO:
+You will need to link against the AMReX library that has been configured correctly for the SWM options you select. This version of the mini-app is only meant to run on GPUs so you will need a version of the AMReX library built with GPU support. See the [build](build.md#amrex-cmake-build) page for more details.
 
 **Run:**
-TODO:
+The executable expects an input file to be passed as the first commandline argument. The input file defines the mesh size, number of iterations, and several other key parameters. An example input file is provided at `$SWM_ROOT/swm_amrex/common/inputs`. For example to run the executable:
+```bash
+$SWM_BUILD_DIR/swm_amrex/swm_AMReX_Fsubroutine/OpenACC/swm_amrex_fsubroutine_omp $SWM_ROOT/swm_amrex/common/inputs
+```
 
 ## Python
 ### Python + NumPy
